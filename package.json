@@ -1,0 +1,25 @@
+{
+  "name": "atividade-final---ppi-desenvolvimento-frontend",
+  "version": "1.0.0",
+  "description": "Desenvolvimento FrontEnd da Atividade Final de PPI",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SullyvanOgawa/Atividade-Final---PPI-Desenvolvimento-FrontEnd.git"
+  },
+  "author": "Sullyvan C N A Ogawa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SullyvanOgawa/Atividade-Final---PPI-Desenvolvimento-FrontEnd/issues"
+  },
+  "homepage": "https://github.com/SullyvanOgawa/Atividade-Final---PPI-Desenvolvimento-FrontEnd#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "express-session": "^1.19.0"
+  }
+}
