@@ -13,7 +13,7 @@ app.use(session({
     cookie: {
         secure: false,
         httpOnly: true,
-        maxAge: 1000 * 60 * 15 
+        maxAge: 1000 * 60 * 60 
     }
 }));
 
@@ -32,7 +32,7 @@ app.post("/login", (requisicao, resposta) =>{
 });
 
 app.get("/login", (requisicao, resposta) => {
-    resposta.redirect('/public/login.html');
+    resposta.redirect('/login.html');
 });
 
 app.get("/logout", (requisicao, resposta) => {

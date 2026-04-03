@@ -2,7 +2,7 @@
 const urlBackend = "http://localhost:3000";
 
 function obterPessoas(){
-    fetch(urlBackend + "/pessoa", {
+    fetch(urlBackend + "/pessoas", {
         method: "GET"
         
     })
@@ -14,7 +14,7 @@ function obterPessoas(){
     })
     .then((conteudoJSON) => {
         if(conteudoJSON.status){
-            if(conteudoJSON.pessoa.length == 0){
+            if(conteudoJSON.pessoas.length == 0){
                 mostrarMensagem("warning", "Desculpe, nenhuma pessoa foi encontrada.");
             }
             else{
@@ -37,7 +37,7 @@ function obterPessoas(){
 
                 tabelaPes.appendChild(cabecalhoTabela); 
                 const corpoTabela = document.createElement("tbody");
-                for(const pessoa of conteudoJSON.pessoa){
+                for(const pessoa of conteudoJSON.pessoas){
                     const linhaTabela = document.createElement("tr");
                     linhaTabela.innerHTML = `
                         <th>${pessoa.id}</th>
@@ -68,9 +68,10 @@ function obterPessoas(){
     });
 }
 
+
 function cadastrarPessoa(){
-    const formPessoas = document.getElementById("formPessoas");
-    if(formPessoas.checkVisibility()){
+    const formularioValidar = document.getElementById("formPessoas");
+    if(formularioValidar.checkValidity()){
 
         const pessoa = {
             cpf: document.getElementById("cpf").value,
@@ -79,7 +80,7 @@ function cadastrarPessoa(){
             email: document.getElementById("email").value
         }
 
-        fetch(urlBackend + "/pessoa", {
+        fetch(urlBackend + "/pessoas", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -94,6 +95,7 @@ function cadastrarPessoa(){
         .then((conteudoJSON) => {
             if(conteudoJSON.status){
                 mostrarMensagem("success", conteudoJSON.mensagem);
+                limparFormulario();
                 obterPessoas();
             }
             else{
@@ -102,22 +104,88 @@ function cadastrarPessoa(){
         })
         .catch((erro) => {
             mostrarMensagem("danger", "Ocorreu um erro ao cadastrar a pessoa. Tente mais tarde!" + erro);
-        });
-
-       
+        });  
+    }
+    else{
+        formPessoas.classList.add("was-validated");
     }
 }
 
+function atualizarPessoa(){
+    const formularioValidar = document.getElementById("formPessoas");
+    if(formularioValidar.checkValidity()){
+        const pessoa = {
+            id: document.getElementById("id").value,
+            cpf: document.getElementById("cpf").value,
+            nome: document.getElementById("nome").value,
+            telefone: document.getElementById("telefone").value,
+            email: document.getElementById("email").value
+        }
+        fetch(urlBackend + "/pessoas" + "/" + pessoa.id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(pessoa)
+            
+        })
+        .then((resposta) => {
+            if(resposta.ok){
+                return resposta.json();
+            }
+        })
+        .then((conteudoJSON) => {
+            if(conteudoJSON.status){
+                mostrarMensagem("success", conteudoJSON.mensagem);
+                limparFormulario()
+                obterPessoas();
+            }
+            else{
+                mostrarMensagem("danger", conteudoJSON.mensagem);
+            }
+        })
+        .catch((erro) => {
+            mostrarMensagem("danger", "Ocorreu um erro ao atualizar a pessoa. Tente mais tarde!" + erro);
+        });
+    }
+    else{
+        formPessoas.classList.add("was-validated");
+    }
+}
+function excluirPessoa(id){
+    const formularioValidar = document.getElementById("formPessoas");
+    if(formularioValidar.checkValidity){
+        fetch(urlBackend + "/pessoas" + id, {
+        method: "DELETE"
+        })
+        .then((resposta) => {
+            if(resposta.ok){
+                return resposta.json();
+            }
+        })
+        .then((conteudoJSON) => {
+            if(conteudoJSON.status){
+                mostrarMensagem("success", conteudoJSON.mensagem);
+                obterPessoas();
+            }
+            else{
+                mostrarMensagem("danger", conteudoJSON.mensagem);
+            }
+        })
+        .catch((erro) => {
+            mostrarMensagem("danger", "Erro ao excluir o Pessoa!" + erro);
+        });
+    }
+    else{
+        formularioValidar.classList.add("was-validated");
+    }
+}
 function selecionarPessoa(id, cpf, nome, telefone, email){
     document.getElementById("id").value = id;
     document.getElementById("cpf").value = cpf;
     document.getElementById("nome").value = nome;
     document.getElementById("telefone").value = telefone;
     document.getElementById("email").value = email;
-
-    document.getElementById("cadastrar").disabled = false;
-    document.getElementById("atualizar").disabled = true;
-    document.getElementById("excluir").disabled = true;
 }
 
 function mostrarMensagem(tipo ="success", mensagem = "Mensagem Padrão") {
@@ -133,9 +201,17 @@ function mostrarMensagem(tipo ="success", mensagem = "Mensagem Padrão") {
     
 }
 
-
+function limparFormulario(){
+    const formPessoas = document.getElementById("formPessoas");
+    formPessoas.classList.remove("was-validated");
+    formPessoas.reset();
+}
 
 obterPessoas();
 
+
 const cadastrarPes = document.getElementById("cadastrar");
 cadastrarPes.onclick = cadastrarPessoa;
+
+const atualizarPes = document.getElementById("atualizar");
+atualizarPes.onclick = atualizarPessoa;

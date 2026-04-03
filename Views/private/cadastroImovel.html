@@ -16,27 +16,42 @@
                 <h3 class="mb-3 text-center">Cadastro de Imóvel</h3>
 
                 <form id="formImoveis" method="POST" action="#" class="row g-3">
+                    <div>
+                        <label for="idImovel" class="form-label">Id</label>
+                        <input type="text" class="form-control" id="idImovel" name="idImovel" value="" readonly>
+                    </div>
+
                     <div class="mb-3">
                         <label for="tituloImovel" class="form-label">Título do imóvel</label>
                         <input type="text" class="form-control" id="tituloImovel" name="tituloImovel" value="" required>
+                        <div class="invalid-feedback">
+                            O imóvel deve possuir um título do imóvel.
+                        </div>
                     </div>
 
                     <div class="mb-3">
                         <label for="valorImovel" class="form-label">Valor do Imóvel</label>
                         <input type="number" step="0.01" class="form-control" id="valorImovel" name="valorImovel" value="" required>
+                        <div class="invalid-feedback">
+                            Por favor, insira o valor do imóvel com duas casas decimais.
+                        </div>
                     </div>
 
                     <div class="col-md-12 mb-5">
                         <label for="tipoImovel" class="form-label">Tipo de Imóvel</label>
                         <select class="form-select" id="tipoImovel" name="tipoImovel" required>
-                            <option selected disabled value="">Escolha o tipo de imóvel</option>
+                            <option selected value="">Escolha o tipo de imóvel</option>
                         </select>
+
+                        <div class="invalid-feedback">
+                            Selecione pelo menoe um tipo de imóvel
+                        </div>
                     </div>
 
                     <div class="col-md-12 mb-5">
-                        <label for="pessoa" class="form-label">Pessoa</label>
-                        <select class="form-select" id="pessoa" name="pessoa" required>
-                            <option selected disabled value="">Escolha Pessoa</option>
+                        <label for="pessoa" class="form-label">Deseja vincular uma pessoa a este imóvel?</label>
+                        <select class="form-select" id="pessoa" name="pessoa">
+                            <option selected value=""></option>
                         </select>
                     </div>
 
@@ -55,7 +70,12 @@
         </div>
             <div id="exibeImoveis"></div>
             <div id="mensagem"></div>    
-    </div>  
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous">
+    </script>
+    <script src="Scripts/cadastroImovel.js"></script>
 </body>
 
 </html>
