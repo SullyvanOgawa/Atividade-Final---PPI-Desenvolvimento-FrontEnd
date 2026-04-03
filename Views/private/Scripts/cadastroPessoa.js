@@ -156,7 +156,7 @@ function atualizarPessoa(){
 function excluirPessoa(id){
     const formularioValidar = document.getElementById("formPessoas");
     if(formularioValidar.checkValidity){
-        fetch(urlBackend + "/pessoas" + id, {
+        fetch(urlBackend + "/pessoas/" + id, {
         method: "DELETE"
         })
         .then((resposta) => {
