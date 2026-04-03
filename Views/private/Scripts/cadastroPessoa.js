@@ -46,10 +46,11 @@ function obterPessoas(){
                         <td>${pessoa.telefone}</td>
                         <td>${pessoa.email}</td>
                         <td><button type="button" onclick="selecionarPessoa(${pessoa.id}, 
-                                                                                        '${pessoa.cpf}', 
-                                                                                        '${pessoa.nome}', 
-                                                                                        '${pessoa.telefone}', 
-                                                                                        '${pessoa.email}')">Selecionar</button></td>
+                                                                            '${pessoa.cpf}', 
+                                                                            '${pessoa.nome}', 
+                                                                            '${pessoa.telefone}', 
+                                                                            '${pessoa.email}')">
+                            Selecionar</button></td>
                     `;
                     
                     corpoTabela.appendChild(linhaTabela);
@@ -215,3 +216,25 @@ cadastrarPes.onclick = cadastrarPessoa;
 
 const atualizarPes = document.getElementById("atualizar");
 atualizarPes.onclick = atualizarPessoa;
+
+const excluirPes = document.getElementById("excluir");
+excluirPes.onclick = function (){
+    const id = document.getElementById("id").value;
+    if(confirm("Tem certeza que deseja excluir essa Pessoa?")){
+        if(id){
+            const formulario = document.getElementById("formPessoas");
+            if(formulario.checkValidity()){
+                 excluirPessoa(id);
+                limparFormulario();
+            }
+            else{
+                formulario.classList.add("was-validated");
+            }
+           
+        }
+        else{
+            mostrarMensagem("danger", "Por favor, escolha uma pessoa para excluir.");
+        }
+    }
+          
+}

@@ -60,7 +60,82 @@ function buscarTipoImovel(){
         mostrarMensagem("danger", "Erro ao obter os tipos de imovel!" + erro);
     });
 }
-  
+
+function buscarImovel(){
+    fetch(urlBackend + "/imoveis", {
+        method: "GET"
+    })
+    .then((resposta) => {
+        if(resposta.ok){
+            return resposta.json();
+        }
+    })
+    .then((conteudoJSON) => {
+        if(conteudoJSON.status){
+            if(conteudoJSON.imoveis.length == 0){
+                mostrarMensagem("warning", "Nenhum imóvel foi encontrado!");
+            }
+            else{
+                const exibeImoveis = document.getElementById("exibeImoveis");
+                exibeImoveis.innerHTML = "";
+                const tabelaImo = document.createElement("table");
+                tabelaImo.className = "table table-hover table-bordered table-striped table-bordered";
+
+                const cabecalhoTabela = document.createElement("thead");
+                cabecalhoTabela.innerHTML = `
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Título Imóvel</th>
+                        <th scope="col">Valor do Imóvel</th>
+                        <th scope="col">Tipo do Imóvel</th>
+                        <th scope="col">Pessoa interessada</th>
+                        <th scope="col"></th>
+                    </tr>
+                `;
+
+                tabelaImo.appendChild(cabecalhoTabela);
+                const corpoTabela = document.createElement("tbody");
+                for(const imovel of conteudoJSON.imoveis){
+                    const linhaTabela = document.createElement("tr");
+                    linhaTabela.innerHTML = `
+                        <td>${imovel.id}</td>
+                        <td>${imovel.tituloImovel}</td>
+                        <td>${imovel.imovelValor}</td>
+                        <td>${imovel.imovelTipo.id}</td>
+                        <td>${imovel.pessoa.nome}</td>
+                        <td><button  onclick="selecionarImovel(${imovel.id}, 
+                                                                '${imovel.tituloImovel}', 
+                                                                ${imovel.imovelValor}, 
+                                                                ${imovel.imovelTipo.id}, 
+                                                                ${imovel.pessoa.id})">
+                            Selecionar</button></td>
+                    `;
+
+                    corpoTabela.appendChild(linhaTabela);
+                }
+
+                tabelaImo.appendChild(corpoTabela);
+                exibeImoveis.appendChild(tabelaImo);
+            }
+        }
+        else{
+            mostrarMensagem("danger", conteudoJSON.mensagem);
+        }
+    })
+    .catch((erro) => {
+        mostrarMensagem("danger", "Erro ao obter os imoveis!" + erro);
+    });
+}
+
+function selecionarImovel(idImovel, tituloImovel, valorImovel, tipoImovel, pessoa){
+
+    document.getElementById("idImovel").value = idImovel;
+    document.getElementById("tituloImovel").value = tituloImovel;
+    document.getElementById("valorImovel").value = valorImovel;
+    document.getElementById("tipoImovel").value = tipoImovel;
+    document.getElementById("pessoa").value = pessoa;
+
+}
 
 function mostrarMensagem(tipo ="success", mensagem = "Mensagem Padrão") {
     const divMensagem = document.getElementById("mensagem");
@@ -79,3 +154,4 @@ function mostrarMensagem(tipo ="success", mensagem = "Mensagem Padrão") {
 
 buscarPessoas();
 buscarTipoImovel();
+buscarImovel();
