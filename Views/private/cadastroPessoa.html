@@ -17,7 +17,13 @@
             <div class="card p-4 shadow mb-4">
                 <h3 class="mb-3 text-center">Cadastro de Pessoa</h3>
 
-                <form id="formImoveis" method="POST" action="#" class="row g-3">
+                <form id="formPessoas" method="POST" action="#" class="row g-3">
+
+                    <div class="col-md-2">
+                        <label for="id" class="form-label">Id</label>
+                        <input type="text" class="form-control" id="id" name="id" value="" readonly>
+                    </div>
+
                     <div class="mb-3">
                         <label for="cpf" class="form-label">CPF</label>
                         <input type="text" class="form-control" id="cpf" name="cpf" value="" required>
@@ -35,8 +41,7 @@
 
                     <div class="mb-3">
                         <label for="email" class="form-label">email</label>
-                        <input type="text" class="form-control" id="email" name="email"
-                            value="" required>
+                        <input type="text" class="form-control" id="email" name="email" value="" required>
                     </div>
                     
 
@@ -45,16 +50,18 @@
                             <button class="btn btn-primary me-2" id='cadastrar' type="button">Cadastrar</button>
                             <button class="btn btn-warning me-2" id='atualizar' type="button">Atualizar</button>
                             <button class="btn btn-danger me-2" id='excluir' type="button">Excluir</button>
-                            <button class="btn btn-secondary me-2" type="button"
-                                onclick="history.back()">Voltar</button>
+                            <button class="btn btn-secondary me-2" type="button" onclick="history.back()">Voltar</button>
                         </div>
                     </div>
+                    <div id="mensagem"></div>
                 </form>
             </div>
         </div>
+       
         <div id="exibePessoa"></div>
-        <div id="mensagem"></div>
+        
     </div>
+    <script src="Scripts/cadastroPessoa.js"></script>
 </body>
 
 </html>
