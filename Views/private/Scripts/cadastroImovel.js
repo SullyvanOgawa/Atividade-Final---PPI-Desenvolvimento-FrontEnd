@@ -127,6 +127,56 @@ function buscarImovel(){
     });
 }
 
+function cadastrarImovel(){
+    const formulario = document.getElementById("formImoveis");
+    if(formulario.checkValidity()){
+        const imovel = {
+            tituloImovel: document.getElementById("tituloImovel").value,
+            valorImovel: Number(document.getElementById("valorImovel").value),
+            imovelTipo: {
+                id: document.getElementById("tipoImovel").value
+            },
+            pessoa: {
+                id: document.getElementById("pessoa").value
+            }
+        }
+
+        fetch(urlBackend + "/imoveis", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(imovel)
+        })
+        .then((resposta) => {
+            if(resposta.ok){
+                return resposta.json();
+            }
+        })
+        .then((conteudoJSON) => {
+            if(conteudoJSON.status){
+                mostrarMensagem("success", conteudoJSON.mensagem);
+                limparFormulario();
+                buscarImovel();
+            }
+            else{
+                mostrarMensagem("danger", conteudoJSON.mensagem);
+            }
+        })
+        .catch((erro) => {
+            mostrarMensagem("danger", "Erro ao cadastrar o imóvel!" + erro.message);
+        });
+    }
+    else{
+        formulario.classList.add("was-validated");
+    }
+}
+
+function limparFormulario(){
+    const formulario = document.getElementById("formImoveis");
+    formulario.classList.remove("was-validated");
+    formulario.reset();
+}
 function selecionarImovel(idImovel, tituloImovel, valorImovel, tipoImovel, pessoa){
 
     document.getElementById("idImovel").value = idImovel;
@@ -155,3 +205,6 @@ function mostrarMensagem(tipo ="success", mensagem = "Mensagem Padrão") {
 buscarPessoas();
 buscarTipoImovel();
 buscarImovel();
+
+const btnCadastrar = document.getElementById("cadastrar");
+btnCadastrar.onclick = cadastrarImovel;
