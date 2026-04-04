@@ -238,3 +238,6 @@ excluirPes.onclick = function (){
     }
           
 }
+
+const limparPes = document.getElementById("limpar");
+limparPes.onclick = limparFormulario;

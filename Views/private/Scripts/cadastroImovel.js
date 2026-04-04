@@ -45,10 +45,10 @@ function buscarTipoImovel(){
     })
     .then((conteudoJSON) => {
         if(conteudoJSON.status){
-            for(const tipoImovel of conteudoJSON.tiposImovel){
+            for(const tipo of conteudoJSON.tiposImovel){
                 const  opcao = document.createElement("option");
-                opcao.value = tipoImovel.id;
-                opcao.textContent = tipoImovel.descricao;
+                opcao.value = tipo.id;
+                opcao.textContent = tipo.descricao;
                 elementTipoImovel.appendChild(opcao);
             }
         }
@@ -87,8 +87,8 @@ function buscarImovel(){
                         <th scope="col">Id</th>
                         <th scope="col">Título Imóvel</th>
                         <th scope="col">Valor do Imóvel</th>
-                        <th scope="col">Tipo do Imóvel</th>
                         <th scope="col">Pessoa interessada</th>
+                         <th scope="col">Tipo do Imóvel</th>
                         <th scope="col"></th>
                     </tr>
                 `;
@@ -99,15 +99,15 @@ function buscarImovel(){
                     const linhaTabela = document.createElement("tr");
                     linhaTabela.innerHTML = `
                         <td>${imovel.id}</td>
-                        <td>${imovel.tituloImovel}</td>
-                        <td>${imovel.imovelValor}</td>
-                        <td>${imovel.imovelTipo.id}</td>
-                        <td>${imovel.pessoa.nome}</td>
+                        <td>${imovel.titulo}</td>
+                        <td>${imovel.valor}</td>
+                         <td>${imovel.pessoa.nome}</td>
+                        <td>${imovel.tipo.descricao}</td>
                         <td><button  onclick="selecionarImovel(${imovel.id}, 
-                                                                '${imovel.tituloImovel}', 
-                                                                ${imovel.imovelValor}, 
-                                                                ${imovel.imovelTipo.id}, 
-                                                                ${imovel.pessoa.id})">
+                                                                '${imovel.titulo}', 
+                                                                ${imovel.valor},  
+                                                                ${imovel.pessoa.id}, 
+                                                                ${imovel.tipo.id})">
                             Selecionar</button></td>
                     `;
 
@@ -131,13 +131,13 @@ function cadastrarImovel(){
     const formulario = document.getElementById("formImoveis");
     if(formulario.checkValidity()){
         const imovel = {
-            tituloImovel: document.getElementById("tituloImovel").value,
-            valorImovel: Number(document.getElementById("valorImovel").value),
-            imovelTipo: {
-                id: document.getElementById("tipoImovel").value
-            },
+            titulo: document.getElementById("tituloImovel").value,
+            valor: Number(document.getElementById("valorImovel").value),
             pessoa: {
                 id: document.getElementById("pessoa").value
+            },
+             tipo: {
+                id: document.getElementById("tipoImovel").value
             }
         }
 
@@ -172,6 +172,75 @@ function cadastrarImovel(){
     }
 }
 
+function atualizar(){
+    const formulario = document.getElementById("formImoveis");
+    if(formulario.checkValidity()){
+        const imovel = {
+            id: document.getElementById("idImovel").value,
+            titulo: document.getElementById("tituloImovel").value,
+            valor: Number(document.getElementById("valorImovel").value),
+            pessoa: {
+                id: document.getElementById("pessoa").value
+            },
+             tipo: {
+                id: document.getElementById("tipoImovel").value
+            }
+        }
+
+        fetch(urlBackend + "/imoveis" + "/" + imovel.id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(imovel)
+        })
+        .then((resposta) => {
+            if(resposta.ok){
+                return resposta.json();
+            }
+        })
+        .then((conteudoJSON) => {
+            if(conteudoJSON.status){
+                mostrarMensagem("success", conteudoJSON.mensagem);
+                limparFormulario();
+                buscarImovel();
+            }
+            else{
+                mostrarMensagem("danger", conteudoJSON.mensagem);
+            }
+        })        
+        .catch((erro) => {
+            mostrarMensagem("danger", "Erro ao atualizar o imóvel!" + erro.message);
+        });
+    }
+    else{
+        formulario.classList.add("was-validated");
+    }
+}
+
+function excluir(id){
+    fetch(urlBackend + "/imoveis" + "/" + id, {
+        method: "DELETE"
+    })
+    .then((resposta) => {
+        if(resposta.ok){
+            return resposta.json();
+        }
+    })
+    .then((conteudoJSON) => {
+        if(conteudoJSON.status){
+            mostrarMensagem("success", conteudoJSON.mensagem);
+            buscarImovel();
+        }
+        else{
+            mostrarMensagem("danger", conteudoJSON.mensagem);
+        }
+    })
+    .catch((erro) => {
+        mostrarMensagem("danger", "Erro ao excluir o imóvel!" + erro.message);
+    });
+}
+
 function limparFormulario(){
     const formulario = document.getElementById("formImoveis");
     formulario.classList.remove("was-validated");
@@ -182,8 +251,8 @@ function selecionarImovel(idImovel, tituloImovel, valorImovel, tipoImovel, pesso
     document.getElementById("idImovel").value = idImovel;
     document.getElementById("tituloImovel").value = tituloImovel;
     document.getElementById("valorImovel").value = valorImovel;
-    document.getElementById("tipoImovel").value = tipoImovel;
     document.getElementById("pessoa").value = pessoa;
+    document.getElementById("tipoImovel").value = tipoImovel;
 
 }
 
@@ -208,3 +277,23 @@ buscarImovel();
 
 const btnCadastrar = document.getElementById("cadastrar");
 btnCadastrar.onclick = cadastrarImovel;
+
+const btnAtualizar = document.getElementById("atualizar");
+btnAtualizar.onclick = atualizar;
+
+const btnExcluir = document.getElementById("excluir");
+btnExcluir.onclick = function () {
+    const id = document.getElementById("idImovel").value;
+    if (confirm("Tem certeza que deseja excluir esse imovel?")) {
+       const fomulario = document.getElementById("formImoveis");
+       if(fomulario.checkValidity()){
+            excluir(id);
+            limparFormulario();
+        }
+        else{
+            fomulario.classList.add("was-validated");
+        }
+    }
+}
+const btnLimpar = document.getElementById("limpar");
+btnLimpar.onclick = limparFormulario;
