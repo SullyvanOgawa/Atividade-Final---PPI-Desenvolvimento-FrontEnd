@@ -18,7 +18,7 @@ function exibirImoveis(){
 
             if(conteudoJSON.imoveis.length == 0){
                 mostrarMensagem("warning", "Nenhum imóvel foi encontrado!");
-                return;
+
             }
 
             const linha = document.createElement("div");
@@ -65,6 +65,18 @@ function exibirImoveis(){
     .catch((erro) => {
         mostrarMensagem("danger", "Erro ao obter os imóveis! " + erro);
     });
+}
+function mostrarMensagem(tipo ="success", mensagem = "Mensagem Padrão") {
+    const divMensagem = document.getElementById("mensagem");
+    divMensagem.innerHTML = `
+        <div class="alert alert-${tipo} alert-dismissible fade show" role="alert">
+            ${mensagem}
+        </div>
+    `;
+    setTimeout(() => {
+        divMensagem.innerHTML = "";
+    }, 5000);
+    
 }
 
 exibirImoveis();
