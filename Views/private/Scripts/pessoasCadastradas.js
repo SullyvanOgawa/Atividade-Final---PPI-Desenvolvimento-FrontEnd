@@ -2,7 +2,7 @@ const urlBackend = "http://localhost:3000";
 
 
 function exibePessoas(){
-    fetch(urlBackend + "/pessoas/", {
+    fetch(urlBackend + "/pessoas", {
         method: "GET"
     })
     .then((resposta) => {
