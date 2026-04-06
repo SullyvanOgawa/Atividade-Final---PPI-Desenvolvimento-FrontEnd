@@ -20,24 +20,34 @@ function exibeImoveisPessoa(idPessoa){
             }
             else{
 
-               const imoveisDaPessoa = conteudoJSON.imoveis.filter(imovel => imovel.pessoa.id == idPessoa);
-
-               if(imoveisDaPessoa.length == 0){
-                    mostrarMensagem("warning", "Nenhum imóvel foi encontrado!");
-               }
+                const imoveisPessoa = conteudoJSON.imoveis.filter(imovel => imovel.pessoa.id == idPessoa);
+                
+                const nomePessoa = document.getElementById("nomePessoa");
+                if(imoveisPessoa.length > 0){
+                    nomePessoa.textContent = imoveisPessoa[0].pessoa.nome;
+                } else {
+                    nomePessoa.textContent = "Nenhum imóvel encontrado para essa pessoa";
+                }
+                                
 
                 const linha = document.createElement("div");
-                linha.className = "row row-cols-1 row-cols-md-3 g-4";
-                for(const imovel of imoveisDaPessoa){
+                linha.className = "row row-cols-1 row-cols-md-2 g-4";
+                for(const imovel of imoveisPessoa){
                     const coluna = document.createElement("div");
                     coluna.className = "col";
 
                     coluna.innerHTML = `
-                        <div class="card h-100 shadow-sm m-3">
-                            <div class="card-body px-4 py-3">
-                                <h2 class="card-title">${imovel.titulo}</h2>
-                                <p class="card-text">${imovel.tipo.descricao}</p>
-                                <p class="card-text">${imovel.valor}</p>
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body ">
+                                <h3 class="card-title">${imovel.titulo}</h3>
+                                <p class="card-text">
+                                    <strong>Tipo:</strong>
+                                    ${imovel.tipo.descricao}
+                                </p>
+                                <p class="card-text">
+                                    <strong>Valor:</strong>
+                                    ${imovel.valor}
+                                </p>
                             </div>
                         </div>
                     `;
@@ -45,7 +55,7 @@ function exibeImoveisPessoa(idPessoa){
                     linha.appendChild(coluna);
                 }
 
-                    exibeImoveis.appendChild(linha);
+                exibeImoveis.appendChild(linha);
             }
         }
     })
@@ -63,7 +73,7 @@ function mostrarMensagem(tipo ="success", mensagem = "Mensagem Padrão") {
     `;
     setTimeout(() => {
         divMensagem.innerHTML = "";
-    }, 5000);
+    }, 6000);
     
 }
 

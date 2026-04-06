@@ -19,13 +19,11 @@
 
                 <h2 class="text-center mb-4" id="nomePessoa"></h2>
 
-                <div id="listaImoveis"></div>
+                <div id="listaImoveis" class="container-fluid" style="max-width: 2500px;"></div>
 
-                <p id="mensagem" class="text-center mt-3" style="display: none;">
-                    Nenhum imóvel encontrado.
-                </p>
+                <div id="mensagem" class="text-center mt-3;"></div>
 
-                <div class="text-center mt-4 me=3">
+                <div class="text-center mt-5 me-3">
                     <button class="btn btn-secondary" onclick="history.back()">
                         Voltar
                     </button>
@@ -36,7 +34,7 @@
         </div>
     </div>
     <script src="Scripts/imoveisPessoa.js"></script>
-
+    
     <script>
         const idUrl = new URLSearchParams(window.location.search);
         const id = idUrl.get("id");
