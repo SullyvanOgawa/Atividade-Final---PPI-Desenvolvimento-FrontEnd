@@ -87,8 +87,8 @@ function buscarImovel(){
                         <th scope="col">Id</th>
                         <th scope="col">Título Imóvel</th>
                         <th scope="col">Valor do Imóvel</th>
+                        <th scope="col">Tipo do Imóvel</th>
                         <th scope="col">Pessoa interessada</th>
-                         <th scope="col">Tipo do Imóvel</th>
                         <th scope="col"></th>
                     </tr>
                 `;
@@ -101,13 +101,13 @@ function buscarImovel(){
                         <td>${imovel.id}</td>
                         <td>${imovel.titulo}</td>
                         <td>${imovel.valor}</td>
-                         <td>${imovel.pessoa.nome}</td>
                         <td>${imovel.tipo.descricao}</td>
+                        <td>${imovel.pessoa.nome}</td>
                         <td><button  onclick="selecionarImovel(${imovel.id}, 
                                                                 '${imovel.titulo}', 
-                                                                ${imovel.valor},  
-                                                                ${imovel.pessoa.id}, 
-                                                                ${imovel.tipo.id})">
+                                                                ${imovel.valor},
+                                                                 ${imovel.tipo.id},  
+                                                                ${imovel.pessoa.id})">
                             Selecionar</button></td>
                     `;
 
@@ -133,11 +133,11 @@ function cadastrarImovel(){
         const imovel = {
             titulo: document.getElementById("tituloImovel").value,
             valor: Number(document.getElementById("valorImovel").value),
-            pessoa: {
-                id: document.getElementById("pessoa").value
-            },
              tipo: {
                 id: document.getElementById("tipoImovel").value
+            },
+            pessoa: {
+                id: document.getElementById("pessoa").value
             }
         }
 
@@ -179,11 +179,11 @@ function atualizar(){
             id: document.getElementById("idImovel").value,
             titulo: document.getElementById("tituloImovel").value,
             valor: Number(document.getElementById("valorImovel").value),
+            tipo: {
+                id: document.getElementById("tipoImovel").value
+            },
             pessoa: {
                 id: document.getElementById("pessoa").value
-            },
-             tipo: {
-                id: document.getElementById("tipoImovel").value
             }
         }
 
@@ -247,13 +247,11 @@ function limparFormulario(){
     formulario.reset();
 }
 function selecionarImovel(idImovel, tituloImovel, valorImovel, tipoImovel, pessoa){
-
     document.getElementById("idImovel").value = idImovel;
     document.getElementById("tituloImovel").value = tituloImovel;
     document.getElementById("valorImovel").value = valorImovel;
-    document.getElementById("pessoa").value = pessoa;
     document.getElementById("tipoImovel").value = tipoImovel;
-
+    document.getElementById("pessoa").value = pessoa;
 }
 
 function mostrarMensagem(tipo ="success", mensagem = "Mensagem Padrão") {
