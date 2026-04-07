@@ -15,7 +15,7 @@ function obterPessoas(){
     .then((conteudoJSON) => {
         if(conteudoJSON.status){
             if(conteudoJSON.pessoas.length == 0){
-                mostrarMensagem("warning", "Desculpe, nenhuma pessoa foi encontrada.");
+                mostrarMensagem("warning", "Nenhuma pessoa foi encontrada.");
             }
             else{
                 const exibePessoa = document.getElementById("exibePessoa");
@@ -167,14 +167,15 @@ function excluirPessoa(id){
         .then((conteudoJSON) => {
             if(conteudoJSON.status){
                 mostrarMensagem("success", conteudoJSON.mensagem);
+                limparFormulario();
                 obterPessoas();
             }
             else{
                 mostrarMensagem("danger", conteudoJSON.mensagem);
             }
         })
-        .catch((erro) => {
-            mostrarMensagem("danger", "Erro ao excluir o Pessoa!" + erro);
+        .catch(() => {
+            mostrarMensagem("danger", "Pessoa não pode ser excluída, está vinculada a um imóvel!");
         });
     }
     else{
@@ -198,7 +199,7 @@ function mostrarMensagem(tipo ="success", mensagem = "Mensagem Padrão") {
     `;
     setTimeout(() => {
         divMensagem.innerHTML = "";
-    }, 5000);
+    }, 8000);
     
 }
 
@@ -224,8 +225,9 @@ excluirPes.onclick = function (){
         if(id){
             const formulario = document.getElementById("formPessoas");
             if(formulario.checkValidity()){
-                 excluirPessoa(id);
+                excluirPessoa(id);
                 limparFormulario();
+                window.location.reload();
             }
             else{
                 formulario.classList.add("was-validated");

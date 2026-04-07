@@ -74,6 +74,7 @@ function buscarImovel(){
         if(conteudoJSON.status){
             if(conteudoJSON.imoveis.length == 0){
                 mostrarMensagem("warning", "Nenhum imóvel foi encontrado!");
+
             }
             else{
                 const exibeImoveis = document.getElementById("exibeImoveis");
@@ -219,7 +220,7 @@ function atualizar(){
 }
 
 function excluir(id){
-    fetch(urlBackend + "/imoveis" + "/" + id, {
+    fetch(urlBackend + "/imoveis/" + id, {
         method: "DELETE"
     })
     .then((resposta) => {
@@ -230,6 +231,7 @@ function excluir(id){
     .then((conteudoJSON) => {
         if(conteudoJSON.status){
             mostrarMensagem("success", conteudoJSON.mensagem);
+            limparFormulario();
             buscarImovel();
         }
         else{
@@ -237,7 +239,7 @@ function excluir(id){
         }
     })
     .catch((erro) => {
-        mostrarMensagem("danger", "Erro ao excluir o imóvel!" + erro.message);
+        mostrarMensagem("danger", "Erro ao excluir o imóvel DEU RUIM MAIS OU MENOS!" + erro.message);
     });
 }
 
@@ -258,7 +260,7 @@ function mostrarMensagem(tipo ="success", mensagem = "Mensagem Padrão") {
     const divMensagem = document.getElementById("mensagem");
     divMensagem.innerHTML = `
         <div class="alert alert-${tipo} alert-dismissible fade show" role="alert">
-            ${mensagem}
+            ${mensagem} 
         </div>
     `;
     setTimeout(() => {
@@ -283,13 +285,20 @@ const btnExcluir = document.getElementById("excluir");
 btnExcluir.onclick = function () {
     const id = document.getElementById("idImovel").value;
     if (confirm("Tem certeza que deseja excluir esse imovel?")) {
-       const fomulario = document.getElementById("formImoveis");
-       if(fomulario.checkValidity()){
-            excluir(id);
-            limparFormulario();
+         if(id){
+            const formulario = document.getElementById("formImoveis");
+            if(formulario.checkValidity()){
+                excluir(id);
+                limparFormulario();
+                window.location.reload();
+            }
+            else{
+                formulario.classList.add("was-validated");
+            }
+           
         }
         else{
-            fomulario.classList.add("was-validated");
+            mostrarMensagem("danger", "Por favor, escolha uma pessoa para excluir.");
         }
     }
 }
