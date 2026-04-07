@@ -290,6 +290,7 @@ btnExcluir.onclick = function () {
             if(formulario.checkValidity()){
                 excluir(id);
                 limparFormulario();
+                // Não consegui falar no vídeo, mas eu usei essa função para que a minha tela pudesse atualizar toda vez que eu excluísse um imóvel. A necessidade surgiu quando eu só tinha um imóvel cadastrado e a tela não atualizava com chamada da função.
                 window.location.reload();
             }
             else{
