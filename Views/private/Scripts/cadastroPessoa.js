@@ -168,7 +168,7 @@ function excluirPessoa(id){
             if(conteudoJSON.status){
                 mostrarMensagem("success", conteudoJSON.mensagem);
                 limparFormulario();
-                obterPessoas();
+                window.location.reload();
             }
             else{
                 mostrarMensagem("danger", conteudoJSON.mensagem);
